@@ -1,0 +1,1 @@
+This project implements a Java-based stream processing pipeline that supports multiple stages, including filtering and selection of results, using a lazy evaluation approach. The pipeline does not execute until explicitly triggered with the execute method.
