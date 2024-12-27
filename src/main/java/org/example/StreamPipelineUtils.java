@@ -21,4 +21,9 @@ public class StreamPipelineUtils {
         SelectClause<T> selectClause = new SelectClause<>(pipeline.getCompletionType());
         pipeline.setSelectClause(selectClause);
     }
+
+    public static <T> void addLimitClause(StreamPipeline<T> pipeline, long limit) {
+        LimitClause<T> limitClause = new LimitClause<>(limit);
+        pipeline.addStage(limitClause);
+    }
 }

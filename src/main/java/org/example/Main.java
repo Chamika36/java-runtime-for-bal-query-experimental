@@ -9,6 +9,7 @@ public class Main {
         StreamPipeline<Integer> pipeline = StreamPipelineUtils.initializePipeline(data, List.class);
         StreamPipelineUtils.addWhereClause(pipeline, x -> x > 3);
         StreamPipelineUtils.addWhereClause(pipeline, x -> x % 2 == 0);
+        StreamPipelineUtils.addLimitClause(pipeline, 3);
         StreamPipelineUtils.addSelectClause(pipeline);
 
         Collection<Integer> result = pipeline.execute();
@@ -17,16 +18,16 @@ public class Main {
 
         System.out.println(result);
 
-        List<String> data1 = Arrays.asList("Alice", "Bob", "Charlie", "Amanda");
-
-        // Initialize pipeline
-        StreamPipeline<String> pipeline1 = StreamPipelineUtils.initializePipeline(data1, List.class);
-
-        // Add clauses using helper methods
-        StreamPipelineUtils.addWhereClause(pipeline1, s -> s.startsWith("A"));
-        StreamPipelineUtils.addSelectClause(pipeline1);
-
-        // Execute and print results
-        System.out.println(pipeline1.execute()); // Output: [Alice, Amanda]
+//        List<String> data1 = Arrays.asList("Alice", "Bob", "Charlie", "Amanda");
+//
+//        // Initialize pipeline
+//        StreamPipeline<String> pipeline1 = StreamPipelineUtils.initializePipeline(data1, List.class);
+//
+//        // Add clauses using helper methods
+//        StreamPipelineUtils.addWhereClause(pipeline1, s -> s.startsWith("A"));
+//        StreamPipelineUtils.addSelectClause(pipeline1);
+//
+//        // Execute and print results
+//        System.out.println(pipeline1.execute()); // Output: [Alice, Amanda]
     }
 }
