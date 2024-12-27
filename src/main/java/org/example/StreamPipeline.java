@@ -4,37 +4,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class StreamPipeline<T> {
     private Stream<T> stream;
     private final Class<?> completionType;
     private final List<PipelineStage<T>> stages = new ArrayList<>();
-    private SelectClause<T> selectClause;
     private final FromClause<T> fromClause;
 
-    private StreamPipeline(FromClause<T> fromClause, Class<?> completionType) {
+    private SelectClause<T> selectClause;
+
+    public StreamPipeline(FromClause<T> fromClause, Class<?> completionType) {
         this.fromClause = fromClause;
         this.completionType = completionType;
     }
 
-    public static <T> StreamPipeline<T> initializePipeline(Iterable<T> collection, Class<?> completionType) {
-        if (collection == null) {
-            throw new IllegalArgumentException("Collection cannot be null");
-        }
-        FromClause<T> fromClause = new FromClause<>(collection);
-        return new StreamPipeline<>(fromClause, completionType);
-    }
-
-    public void addWhereClause(Predicate<T> condition) {
-        WhereClause<T> whereClause = new WhereClause<>(condition);
-        stages.add(whereClause);
-    }
-
-    public void addSelectClause() {
-        selectClause = new SelectClause<>(completionType);
-        stages.add(selectClause);
+    public void addStage(PipelineStage<T> stage) {
+        stages.add(stage);
     }
 
     public Collection<T> execute() {
@@ -46,6 +32,11 @@ public class StreamPipeline<T> {
         }
 
         return selectClause != null ? selectClause.getResult() : Collections.emptyList();
+    }
+
+    public void setSelectClause(SelectClause<T> selectClause) {
+        this.selectClause = selectClause;
+        stages.add(selectClause);
     }
 
     public Stream<T> getStream() {
