@@ -13,6 +13,21 @@ public class Main {
 
         Collection<Integer> result = pipeline.execute();
 
+        Collection<Integer> result1 = pipeline.execute();
+
         System.out.println(result); // Output: [4, 5, 6]
+
+        List<String> data1 = Arrays.asList("Alice", "Bob", "Charlie", "Amanda");
+
+        // Initialize pipeline
+        StreamPipeline<String> pipeline1 = StreamPipeline.initializePipeline(data1, List.class);
+
+        // Add clauses
+        pipeline1.addWhereClause(s -> s.startsWith("A"));
+        pipeline1.addSelectClause();
+
+        // Execute and print results
+        Collection<String> results = pipeline1.execute();
+        System.out.println(results); // Output: [Alice, Amanda]
     }
 }

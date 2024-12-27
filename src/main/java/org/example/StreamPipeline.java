@@ -1,18 +1,21 @@
 package org.example;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 public class StreamPipeline<T> {
     private Stream<T> stream;
     private final Class<?> completionType;
     private final List<PipelineStage<T>> stages = new ArrayList<>();
     private SelectClause<T> selectClause;
+    private final FromClause<T> fromClause;
 
-    public StreamPipeline(Stream<T> stream, Class<?> completionType) {
-        this.stream = stream;
+    private StreamPipeline(FromClause<T> fromClause, Class<?> completionType) {
+        this.fromClause = fromClause;
         this.completionType = completionType;
     }
 
@@ -20,7 +23,8 @@ public class StreamPipeline<T> {
         if (collection == null) {
             throw new IllegalArgumentException("Collection cannot be null");
         }
-        return new StreamPipeline<>(StreamSupport.stream(collection.spliterator(), false), completionType);
+        FromClause<T> fromClause = new FromClause<>(collection);
+        return new StreamPipeline<>(fromClause, completionType);
     }
 
     public void addWhereClause(Predicate<T> condition) {
@@ -34,9 +38,13 @@ public class StreamPipeline<T> {
     }
 
     public Collection<T> execute() {
+        // Initialize the stream using FromClause
+        stream = fromClause.apply(null);
+
         for (PipelineStage<T> stage : stages) {
             stream = stage.apply(stream);
         }
+
         return selectClause != null ? selectClause.getResult() : Collections.emptyList();
     }
 
