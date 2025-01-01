@@ -4,13 +4,16 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        List<Integer> data = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 20);
+        List<Integer> data = Arrays.asList(1, 2, 8, 3, 4, 5, 6, 7, 8, 9, 20);
 
         StreamPipeline<Integer> pipeline = StreamPipelineUtils.initializePipeline(data, List.class);
         StreamPipelineUtils.addWhereClause(pipeline, x -> x > 3);
         StreamPipelineUtils.addWhereClause(pipeline, x -> x % 2 == 0);
-        StreamPipelineUtils.addLimitClause(pipeline, 3);
+//        StreamPipelineUtils.addLimitClause(pipeline, 3);
         StreamPipelineUtils.addSelectClause(pipeline);
+        // Add Order By Clause
+        Comparator<Integer> comparator = Comparator.naturalOrder(); // Sort in ascending order
+        StreamPipelineUtils.addOrderByClause(pipeline, new Comparator[]{comparator}, new boolean[]{true});
 
         Collection<Integer> result = pipeline.execute();
 

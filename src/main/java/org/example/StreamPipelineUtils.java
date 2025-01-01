@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.Comparator;
 import java.util.function.Predicate;
 
 public class StreamPipelineUtils {
@@ -26,4 +27,13 @@ public class StreamPipelineUtils {
         LimitClause<T> limitClause = new LimitClause<>(limit);
         pipeline.addStage(limitClause);
     }
+
+    public static <T> void addOrderByClause(StreamPipeline<T> pipeline, Comparator<T>[] comparators, boolean[] directions) {
+        OrderByClause<T> orderByClause = new OrderByClause<>();
+        for (int i = 0; i < comparators.length; i++) {
+            orderByClause.addOrderKey(comparators[i], directions[i]);
+        }
+        pipeline.addStage(orderByClause);
+    }
+
 }
