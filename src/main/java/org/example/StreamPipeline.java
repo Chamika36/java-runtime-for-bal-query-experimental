@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class StreamPipeline<T> {
@@ -13,6 +10,7 @@ public class StreamPipeline<T> {
     private final FromClause<T> fromClause;
 
     private SelectClause<T> selectClause;
+    private final Map<String, Object> letVariables = new HashMap<>();
 
     public StreamPipeline(FromClause<T> fromClause, Class<?> completionType) {
         this.fromClause = fromClause;
@@ -45,5 +43,17 @@ public class StreamPipeline<T> {
 
     public Class<?> getCompletionType() {
         return completionType;
+    }
+
+    public void addLetVariable(String name, Object value) {
+        letVariables.put(name, value);
+    }
+
+    public Object getLetVariable(String name) {
+        return letVariables.get(name);
+    }
+
+    public Map<String, Object> getAllLetVariables() {
+        return Collections.unmodifiableMap(letVariables);
     }
 }

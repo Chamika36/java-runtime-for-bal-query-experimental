@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StreamPipelineUtils {
@@ -25,5 +26,10 @@ public class StreamPipelineUtils {
     public static <T> void addLimitClause(StreamPipeline<T> pipeline, long limit) {
         LimitClause<T> limitClause = new LimitClause<>(limit);
         pipeline.addStage(limitClause);
+    }
+
+    public static <T> void addLetClause(StreamPipeline<T> pipeline, String variableName, Function<T, Object> expression) {
+        LetClause<T> letClause = new LetClause<>(variableName, expression, pipeline);
+        pipeline.addStage(letClause);
     }
 }
