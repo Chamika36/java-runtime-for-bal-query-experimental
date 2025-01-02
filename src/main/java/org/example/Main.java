@@ -35,16 +35,20 @@ public class Main {
         System.out.println("Final Results:");
         result.forEach(System.out::println);
 
-//        List<String> data1 = Arrays.asList("Alice", "Bob", "Charlie", "Amanda");
-//
-//        // Initialize pipeline
-//        StreamPipeline<String> pipeline1 = StreamPipelineUtils.initializePipeline(data1, List.class);
-//
-//        // Add clauses using helper methods
-//        StreamPipelineUtils.addWhereClause(pipeline1, s -> s.startsWith("A"));
-//        StreamPipelineUtils.addSelectClause(pipeline1);
-//
-//        // Execute and print results
-//        System.out.println(pipeline1.execute()); // Output: [Alice, Amanda]
+        List<String> data1 = Arrays.asList("Alice", "Bob", "Charlie", "Amanda");
+
+        // Initialize pipeline
+        StreamPipeline<String> pipeline1 = StreamPipelineUtils.initializePipeline(data1, List.class);
+
+        // Add clauses using helper methods
+        StreamPipelineUtils.addWhereClause(pipeline1, s -> s.startsWith("A"));
+        StreamPipelineUtils.addLetClause(pipeline1, "Capital", (String x) -> x.toUpperCase());
+        StreamPipelineUtils.addSelectClause(pipeline1);
+
+        // Execute and print results
+        System.out.println(pipeline1.execute()); // Output: [Alice, Amanda]
+
+        System.out.println("Let Variables:");
+        pipeline1.getAllLetVariables().forEach((key, value) -> System.out.println(key + " = " + value));
     }
 }
