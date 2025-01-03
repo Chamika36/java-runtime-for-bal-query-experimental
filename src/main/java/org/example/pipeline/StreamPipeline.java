@@ -1,4 +1,8 @@
-package org.example;
+package org.example.pipeline;
+
+import org.example.clauses.FromClause;
+import org.example.clauses.PipelineStage;
+import org.example.clauses.SelectClause;
 
 import java.util.Collection;
 import java.util.Collections;

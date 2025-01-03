@@ -1,4 +1,7 @@
-package org.example;
+package org.example.utils;
+
+import org.example.clauses.*;
+import org.example.pipeline.StreamPipeline;
 
 import java.util.function.Function;
 import java.util.function.Predicate;

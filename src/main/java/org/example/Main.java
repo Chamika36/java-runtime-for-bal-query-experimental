@@ -3,6 +3,9 @@ package org.example;
 
 import org.ballerinalang.jvm.values.ArrayValueImpl;
 import org.ballerinalang.jvm.values.api.BCollection;
+import org.example.pipeline.StreamPipeline;
+import org.example.utils.BCollectionToStreamUtils;
+import org.example.utils.StreamPipelineUtils;
 
 import java.util.Arrays;
 import java.util.Collection;

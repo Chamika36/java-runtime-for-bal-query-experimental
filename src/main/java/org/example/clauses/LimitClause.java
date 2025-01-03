@@ -1,4 +1,4 @@
-package org.example;
+package org.example.clauses;
 
 import java.util.stream.Stream;
 
