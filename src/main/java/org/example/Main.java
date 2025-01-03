@@ -1,6 +1,14 @@
 package org.example;
 
-import java.util.*;
+
+import org.ballerinalang.jvm.values.ArrayValueImpl;
+import org.ballerinalang.jvm.values.api.BCollection;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +39,7 @@ public class Main {
         System.out.println("Let Variables:");
         pipeline.getAllLetVariables().forEach((key, value) -> System.out.println(key + " = " + value));
 
-//         Print the final results
+        // Print the final results
         System.out.println("Final Results:");
         result.forEach(System.out::println);
 
@@ -50,5 +58,14 @@ public class Main {
 
         System.out.println("Let Variables:");
         pipeline1.getAllLetVariables().forEach((key, value) -> System.out.println(key + " = " + value));
+
+        long[] values = {1L, 2L, 3L, 4L};
+        BCollection collection = new ArrayValueImpl(values);  // Create an example collection
+
+        // Convert BCollection to Java Stream using StreamUtils
+        Stream<Long> stream = BCollectionToStreamUtils.toStream(collection);
+
+        // Process the stream (example: print each element)
+        stream.filter(x -> x <= 2).forEach(System.out::println);
     }
 }
