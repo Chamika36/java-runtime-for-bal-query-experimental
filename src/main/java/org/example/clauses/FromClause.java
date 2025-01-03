@@ -1,17 +1,32 @@
 package org.example.clauses;
 
+import org.ballerinalang.jvm.values.api.BCollection;
+import org.example.utils.BCollectionToStreamUtils;
+
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
+/**
+ * Clause that applies the `from` operation to the stream, now supporting BCollection.
+ */
 public class FromClause<T> implements PipelineStage<T> {
-    private final Iterable<T> collection;
+    private final BCollection collection;
+    private String variableName;
 
-    public FromClause(Iterable<T> collection) {
+    public FromClause(BCollection collection) {
         this.collection = collection;
     }
 
     @Override
     public Stream<T> apply(Stream<T> input) {
-        return StreamSupport.stream(collection.spliterator(), false);
+        // Use the utility to convert BCollection to a Java Stream
+        return BCollectionToStreamUtils.toStream(collection);
+    }
+
+    public void setVariableName(String variableName) {
+        this.variableName = variableName;
+    }
+
+    public String getVariableName() {
+        return variableName;
     }
 }

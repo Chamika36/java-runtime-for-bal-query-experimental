@@ -1,5 +1,6 @@
 package org.example.utils;
 
+import org.ballerinalang.jvm.values.api.BCollection;
 import org.example.clauses.*;
 import org.example.pipeline.StreamPipeline;
 
@@ -8,7 +9,7 @@ import java.util.function.Predicate;
 
 public class StreamPipelineUtils {
 
-    public static <T> StreamPipeline<T> initializePipeline(Iterable<T> collection, Class<?> completionType) {
+    public static <T> StreamPipeline<T> initializePipeline(BCollection collection, Class<?> completionType) {
         if (collection == null) {
             throw new IllegalArgumentException("Collection cannot be null");
         }
