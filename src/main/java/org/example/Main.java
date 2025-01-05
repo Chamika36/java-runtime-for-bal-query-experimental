@@ -1,13 +1,21 @@
 package org.example;
 
+
+import org.ballerinalang.jvm.types.BTupleType;
+import org.ballerinalang.jvm.types.BType;
 import org.ballerinalang.jvm.values.ArrayValueImpl;
+import org.ballerinalang.jvm.values.TupleValueImpl;
+import org.ballerinalang.jvm.values.api.BArray;
 import org.ballerinalang.jvm.values.api.BCollection;
+import org.example.example.BMapPipelineExample;
 import org.example.pipeline.StreamPipeline;
+import org.example.utils.BCollectionToStreamUtils;
 import org.example.utils.StreamPipelineUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 public class Main {
@@ -47,24 +55,31 @@ public class Main {
         System.out.println("Final Results:");
         System.out.println(result);
 
-//        List<String> data1 = Arrays.asList("Alice", "Bob", "Charlie", "Amanda");
-//
-//        // Initialize pipeline
-//        StreamPipeline<String> pipeline1 = StreamPipelineUtils.initializePipeline(data1, List.class);
-//
-//        // Add clauses using helper methods
-//        StreamPipelineUtils.addWhereClause(pipeline1, s -> s.startsWith("A"));
-//        StreamPipelineUtils.addLetClause(pipeline1, "Capital", (String x) -> x.toUpperCase());
-//        StreamPipelineUtils.addSelectClause(pipeline1);
-//
-//        // Execute and print results
-//        System.out.println(pipeline1.execute()); // Output: [Alice, Amanda]
-//
-//        System.out.println("Let Variables:");
-//        pipeline1.getAllLetVariables().forEach((key, value) -> System.out.println(key + " = " + value));
+        String[] jdata = {"Alice", "Bob", "Charlie", "Amanda"};
 
-//        Collection<Employee> result3 = EmployeePipelineExample.runEmployeePipeline();
-//
-//        System.out.println(result3);
+        BArray data1 = new ArrayValueImpl(jdata);
+
+        // Initialize pipeline
+        StreamPipeline<String> pipeline1 = StreamPipelineUtils.initializePipeline(data1, List.class);
+
+        // Add clauses using helper methods
+        StreamPipelineUtils.addWhereClause(pipeline1, s -> s.startsWith("A"));
+        StreamPipelineUtils.addLetClause(pipeline1, "Capital", (String x) -> x.toUpperCase());
+        StreamPipelineUtils.addSelectClause(pipeline1);
+
+        // Execute and print results
+        System.out.println(pipeline1.execute()); // Output: [Alice, Amanda]
+
+        System.out.println("Let Variables:");
+        pipeline1.getAllLetVariables().forEach((key, value) -> System.out.println(key + " = " + value));
+
+        Collection<BTupleType> result4 = BMapPipelineExample.runPipelineWithBMap();
+
+        // Print the let variables (computed during execution)
+
+        // Print the final results
+        System.out.println("Final Results:");
+        System.out.println(result4);
+
     }
 }

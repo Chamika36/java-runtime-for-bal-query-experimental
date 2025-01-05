@@ -1,5 +1,7 @@
 package org.example.clauses;
 
+import org.ballerinalang.jvm.values.api.BCollection;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -16,19 +18,34 @@ public class SelectClause<T> implements PipelineStage<T> {
 
     @Override
     public Stream<T> apply(Stream<T> stream) {
-        if (completionType.isAssignableFrom(List.class)) {
-            result = stream.collect(Collectors.toList());
-        } else if (completionType.isAssignableFrom(Set.class)) {
-            result = stream.collect(Collectors.toSet());
-        } else {
-            throw new UnsupportedOperationException(
-                    "Unsupported completion type: " + completionType.getName()
-            );
+        if (stream == null) {
+            throw new IllegalStateException("Stream is null. Check the pipeline stages.");
         }
-        return Stream.empty(); // The stream is effectively consumed here.
+
+        try {
+            if (completionType.isAssignableFrom(List.class)) {
+                result = stream.collect(Collectors.toList());
+            } else if (completionType.isAssignableFrom(Set.class)) {
+                result = stream.collect(Collectors.toSet());
+            } else if (completionType.isAssignableFrom(BCollection.class)) {
+                result = (Collection<T>) stream.collect(Collectors.toList());
+            } else {
+                throw new UnsupportedOperationException(
+                        "Unsupported completion type: " + completionType.getName()
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error during SelectClause execution.", e);
+        }
+
+        return Stream.empty(); // Stream is consumed here.
     }
 
     public Collection<T> getResult() {
+        if (result == null) {
+            throw new IllegalStateException("SelectClause result is null. Ensure apply() was called.");
+        }
         return result;
     }
 }
